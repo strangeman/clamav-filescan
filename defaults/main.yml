@@ -1,2 +1,4 @@
 ---
-# defaults file for clamav-fileserver
+# defaults file for clamav-filescan
+clamav_scandir: "/"
+clamav_mail: "root@localhost"

@@ -1,2 +1,23 @@
 ---
-# tasks file for clamav-fileserver
+# tasks file for clamav-filescan
+- name: update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: install clamav packages 
+  apt: pkg=clamav state=latest
+
+- name: create clamav cron script
+  template: 
+    dest="/etc/cron.d/clamav_cron.sh"  
+    mode="0755"  
+    owner="root" 
+    src="clamav_cron.sh.j2" 
+
+- name: weekly clamav scan
+  cron: 
+    name="weekly_clamav"  
+    user="root"  
+    minute="0"
+    hour="6"
+    weekday="1" 
+    job="/etc/cron.d/clamav_cron.sh >/dev/null 2>&1"

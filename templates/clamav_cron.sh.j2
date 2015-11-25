@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#update database
+freshclam --log=/tmp/clamscan.log --quiet
+
+#scan files
+clamscan --infected --quiet --log=/tmp/clamscan.log --recursive --remove=yes {{ clamav_scandir }}
+
+#send report
+mail -s "ClamAV report" {{ clamav_mail }} < /tmp/clamscan.log
+
+#remove log
+rm /tmp/clamscan.log 
